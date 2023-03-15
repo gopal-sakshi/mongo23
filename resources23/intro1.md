@@ -26,5 +26,53 @@ db.movies.createIndex({ title23: "text" });
 db.movies.createIndex({ title: "text", fullplot: "text" });                 // `compound text index`
 - Every text search <queries all the fields specified in that index> for matches.
 
+----------------------------------------------------------------------------------------------------
+MongoDB doesn't support its own export format to import/add data into a collection.
+
+// Dont use THIS
+{
+     "_id": { "$oid":"5e666e346e781e0b34864de4" },
+     "title":"Blacksmith scene",
+     "released": "1893"
+}
+
+// Use THIS
+{
+     "_id": ObjectId("5e666e346e781e0b34864de4"),
+     "title":"Blacksmith scene",
+     "released": "1893"
+}
+----------------------------------------------------------------------------------------------------
+
+Aggregation vs. Query Operations
+
+Using query operations, such as the find() method, you can perform the following actions:
+    Select which documents to return.
+    Select which fields to return.
+    Sort the results.
+
+Using aggregation operations, you can perform the following actions:
+    Perform all query operations.
+    Rename fields.
+    Calculate fields.
+    Summarize data.
+    Group values.
+
+Aggregation operations have some limitations:
+- Returned documents must not violate the BSON-document size limit of 16 megabytes.
+- Pipeline stages have a memory limit of 100 megabytes by default. 
+    If necessary, you may exceed this limit by setting the <allowDiskUse> property of AggregateOptions to true.
+
+----------------------------------------------------------------------------------------------------
 
 
+
+$
+- Positional Operator
+- 
+
+All Positional Operator
+: $[]
+
+Filtered Positional Operator
+: $[<identifier>]
