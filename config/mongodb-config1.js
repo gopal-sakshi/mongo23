@@ -1,10 +1,5 @@
-var mongo = require('mongodb');
-var MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 var url = "mongodb://localhost:27017/";
-
-MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbObject = db.db('zips23');
-    console.log("Database created!");
-    db.close();
-});
+const client = new MongoClient(url);
+client.connect();
+module.exports = client;
