@@ -8,3 +8,5 @@ var options = { sort: { length: -1 }, limit: 3, skip: 5 }
 myColl.find(query, options);
 
 /**********************************************************************/
+
+db.movies44.renameCollection("movies");
