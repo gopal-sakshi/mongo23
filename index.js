@@ -127,3 +127,82 @@ app.use('/group23', async (req, res) => {                           // group all
     res.send(results).status(200);
 });
 /****************************************************************************************************/
+app.use('/updateRatings', async (req, res) => {                           // group all unrated movies; year-wise
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const newRatings = {        
+          $map: {
+            input: "$genres",
+            as: "comments23",
+            in: { $concat: [ "$$comments23", "_1912" ] }
+        }        
+    }
+    const pipeline23 = [
+        { $match: { year:1912 } },
+        { $project: {  newRatings } },
+    ];    // this only returns the results with _1912 appended... wont modify original array
+    let results = await moviesCollection.aggregate(pipeline23).toArray();
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+app.use('/addFields', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const pipeline24 = [ 
+        { $match: { year:1914 } },
+        { $project: { title: 1, totalRatings23: 1, imdb : { rating: 1 } } }, 
+        { $addFields: { totalRatings23: { $add: [ "$imdb.rating", "$tomatoes.fresh" ] }} }
+    ]
+    let results = await moviesCollection.aggregate(pipeline24).toArray();
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+app.use('/queryRatings', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const query1 = { "imdb.rating" : 7.1 };
+    const query2 = { "imdb.rating" : { $gt: 8 } };
+    const projection23 = { _id:0, title:1, "imdb.rating": 1, imdb : { votes: 1 }, writers:1 };
+    let results = await moviesCollection.find(query2).project(projection23).limit(10).toArray();
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+app.use('/queryArray', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const query1 = { languages: ["English", "French"] };
+    const query2 = { genres: ["Drama", "Short"] };                      // matches EXACTLY
+    const query3 = { genres: { $all: ["Drama", "Short"] }};             // matches with "Drama, Short, Fantasy"
+    const projection23 = { _id:0, title:1, languages:1, genres:1 };
+    let results = await moviesCollection.find(query3).project(projection23).limit(10).toArray();
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+app.use('/addArrayAttribute', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies"); 
+    const query1 = { title: "Gertie the Dinosaur" };
+    const options1 = { '$set' : {'timeStamps' : [11,12,14,15] } };
+    let results = await moviesCollection.updateMany(query1,options1);
+    res.send(results).status(200);          
+    // results = { "acknowledged": true, "modifiedCount": 2, "upsertedId": null, "upsertedCount": 0, "matchedCount": 2 }
+});
+/****************************************************************************************************/
+
+app.use('/addRandomArray', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const query1 = { year: { $lt: 1900} }
+    const customJsFunction = { $function: {
+        body: `function() { 
+            return [ Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100) ];
+        }`,
+        args: [],
+        lang: "js"
+    }};
+    const options1 = [{ $set: { timeStamps12: customJsFunction } }];    
+    // let results = await moviesCollection.updateMany(query1,options1);   // NOT WORKING
+    let results = await moviesCollection.updateOne(query1,options1);   // WORKING
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
