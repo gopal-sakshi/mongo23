@@ -1,0 +1,13 @@
+document bad structure
+- forms contain a sub-document, of which each key contains another sub-document with a single property, status. 
+- This is difficult to traverse as your forms element has an arbitrary structure for each document you create
+    1st form has these properties ===> PreOp, Alert, City, Country
+    2nd form has these properties ===> Journey, Women, Child, Farm
+- the 2nd element changes all the time
+    Forms -> PreOp -> status
+    Forms -> Alert -> status
+- difficult/complex to query
+
+document good structure
+- document structure where you can traverse in a standard pattern
+- 

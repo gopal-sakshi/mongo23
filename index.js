@@ -105,14 +105,14 @@ app.use('/add23', async (req, res) => {
     res.send(addResult).status(200);        // addResult = { "acknowledged": true, "insertedId": "ObjectId('5e666e346e781e0b34864de4')" }
 });
 /****************************************************************************************************/
-// app.use('/updateArray', async (req, res) => {                   // update array within a row (ie. Document)
-//     const zipsDataBase = mongoClient2.db('zips23');
-//     let moviesCollection = zipsDataBase.collection("movies");
-//     const query12 = { title: "Meshes of the Afternoon" };
-//     const updateDocument = { $set: { "items.$.size": "extra large" } };
-//     let addResult = await moviesCollection.updateOne(query12, updateDocument);
-//     res.send(addResult).status(200);    
-// });
+app.use('/updateArray', async (req, res) => {                   // update array within a row (ie. Document)
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const query12 = { title: "Meshes of the Afternoon" };
+    const updateDocument = { $set: { "items.size": "extra large" } };
+    let addResult = await moviesCollection.updateOne(query12, updateDocument);
+    res.send(addResult).status(200);    
+});
 /****************************************************************************************************/
 app.use('/group23', async (req, res) => {                           // group all unrated movies; year-wise
     const zipsDataBase = mongoClient2.db('zips23');
@@ -201,8 +201,34 @@ app.use('/addRandomArray', async (req, res) => {
         lang: "js"
     }};
     const options1 = [{ $set: { timeStamps12: customJsFunction } }];    
-    // let results = await moviesCollection.updateMany(query1,options1);   // NOT WORKING
-    let results = await moviesCollection.updateOne(query1,options1);   // WORKING
+    let results = await moviesCollection.updateMany({},options1);   // NOT WORKING in Ubuntu... worked in Windows
+    // let results = await moviesCollection.updateOne(query1,options1);   // WORKING
     res.send(results).status(200);
+});
+/****************************************************************************************************/
+
+app.use('/optimize23', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const addFields23 = { maxTime: { $max: "$timeStamps12" }, minTime: { $min: "$timeStamps12" } }
+    const project23 = { _id: 0, title: 1, timeStamps12: 1, maxTime: 1, minTime: 1, 
+        awards23: "$" + "awards.wins",  avgTime: { $avg: ["$maxTime",  "$minTime"] }  };
+    const match23 = {  //  "awards.wins": 1,                            // enduko idi work avvatam ledu
+        minTime: { $lt: 10 }, avgTime: { $gt: 40 } };
+    const pipeline23 = [
+        { $addFields: addFields23 },
+        { $project: project23 },
+        { $match: match23 }
+    ];    
+    let results = await moviesCollection.aggregate(pipeline23).limit(3).toArray();
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+
+app.use('/lowestTimestamps', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let moviesCollection = zipsDataBase.collection("movies");
+    const query12 = { };
+    let results = await moviesCollection.aggregate(pipeline23).limit(3).toArray();
 });
 /****************************************************************************************************/
