@@ -1,19 +1,47 @@
 const express23 = require('express');
 const bodyParser= require('body-parser');
 const cors = require('cors');
-const mongoClient2 = require('./config/mongodb-config2');
-// const mongoClient1 = require('./config/mongodb-config1');
+const mongoDb = require('mongodb');
 const PORT = 3021;
 const app = express23();
 app.use(bodyParser.json());
-app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) })
+
+// // APPROACH I ==========> start mongoServer instantly 
+const mongoClient2 = require('./config/mongodb-config2');
+app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) });
+
+// APPROACH II ===========> wait for mongoConnection & start Server (NOT WORKING)
+// const mongoClient2 = require('./config/mongodb-config4');
+// (async function connect23() { 
+//     await mongoClient2;
+//     console.log(mongoClient2);
+//     app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) })
+// })();
 /****************************************************************************************************/
 app.use('/get4Movies', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const db23 = 'zips23';
+    const zipsDataBase = mongoClient2.db(db23);
     let moviesCollection = zipsDataBase.collection("movies");
     let results = await moviesCollection.find({}).limit(4).toArray();
     res.send(results).status(200);
 });
+
+/****************************************************************************************************/
+
+app.use('/moviesThatStartWithM', async (req, res) => {
+    const db23 = 'zips23';
+    const zipsDataBase = mongoClient2.db(db23);
+    let moviesColl = zipsDataBase.collection("movies");
+    const filter1 = { title:/^S|^R/ };      // must start with either S (or) R
+    const filter2 = { title:/^Za/ };        // must start with "Za"
+    const filter3 = { year: {$gte: 2012} };
+    const pipeline23 = { title:1, _id:0, year: 1 };
+    // let results = await moviesColl.find(filter2).explain();
+    // let results = await moviesColl.find(filter2).project(pipeline23).toArray();
+    let results = await moviesColl.find({ $and: [filter2, filter3]}).project(pipeline23).toArray();
+    res.send(results).status(200);
+});
+
 /****************************************************************************************************/
 app.use('/allMoviesBefore1913', async (req, res) => {
     const zipsDataBase = mongoClient2.db('zips23');
@@ -173,8 +201,9 @@ app.use('/queryArray', async (req, res) => {
     const query1 = { languages: ["English", "French"] };
     const query2 = { genres: ["Drama", "Short"] };                      // matches EXACTLY
     const query3 = { genres: { $all: ["Drama", "Short"] }};             // matches with "Drama, Short, Fantasy"
+    const query4 = { genres: { $in: ["Drama", "Short"] }};              // either Drama (or) Short must be present
     const projection23 = { _id:0, title:1, languages:1, genres:1 };
-    let results = await moviesCollection.find(query3).project(projection23).limit(10).toArray();
+    let results = await moviesCollection.find(query4).project(projection23).limit(10).toArray();
     res.send(results).status(200);
 });
 /****************************************************************************************************/
@@ -203,6 +232,27 @@ app.use('/addRandomArray', async (req, res) => {
     const options1 = [{ $set: { timeStamps12: customJsFunction } }];    
     // let results = await moviesCollection.updateMany(query1,options1);   // NOT WORKING
     let results = await moviesCollection.updateOne(query1,options1);   // WORKING
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+app.use('/discountedPrice', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let suppliesCollection = zipsDataBase.collection("supplies23");
+    // calculate the discounted price based on the qty
+    // return documents whose calculated discount price is less than 5
+    // instead of NumberDecimal(); use mongoDb.Decimal128.fromString()
+    // binder 12, notebook 8, pencil 6, eraser 3, legal_pad 10
+    // binder 6, notebook 4, pencil 4.5, eraser 1.5, legal_pad 7.5
+    let discountedPrice = {
+        $cond: {
+           if: { $gte: ["$qty", 100] },
+           then: { $multiply: ["$price", 0.50] },
+           else: { $multiply: ["$price", 0.75] }
+        }
+    };
+    const query1 = { $expr: { $lt: [ discountedPrice, 7 ] }};
+    
+    let results = await suppliesCollection.find(query1).toArray();
     res.send(results).status(200);
 });
 /****************************************************************************************************/
