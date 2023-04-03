@@ -269,16 +269,77 @@ app.use('/discountedPrice', async (req, res) => {
         }
     };
     const query1 = { $expr: { $lt: [ discountedPrice, 7 ] }};
-    
     let results = await suppliesCollection.find(query1).toArray();
     res.send(results).status(200);
 });
 /****************************************************************************************************/
+app.use('/lookup23', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let suppliesCollection = zipsDataBase.collection("supplies23");
+    // collect the information from the document 'order' & 'SKU' field from the 'inventory' document.
+    const lookup1 = {
+        from: "supplies24",
+        localField: "item",
+        foreignField: "item",
+        as: "inventory_docs22"
+    };    
+    const project1 = {_id: 0, item: 1, price: 1, material22: '$inventory_docs22.material'};
+    const res11 = await suppliesCollection.aggregate([ {$lookup: lookup1}, {$unwind: '$inventory_docs22'}, {$project: project1} ]).toArray();
+    res.send(res11).status(200);
+});
+/****************************************************************************************************/
+app.use('/updateId', async (req, res) => {
+    const coll1 = mongoClient2.db('zips23').collection("movies");
+    const coll2 = mongoClient2.db('movies23').collection("movies_copy4");
+    var count = 50001;
+    await coll1.find().forEach(doc => {
+        doc._id = count++;
+        coll2.insertOne(doc);
+    });
+    res.send({info:`${count - 50001} doc updated`}).status(200);
+});
+/****************************************************************************************************/
 
+app.use('/splitCollection', async (req, res) => {
+    const coll1 = mongoClient2.db('movies23').collection("movies_copy");
+    const basicDoc = mongoClient2.db('movies23').collection("movies_basic");
+    const detailedDoc = mongoClient2.db('movies23').collection("movies_detail");    
+    await coll1.find().forEach(doc => {
+        var basic = { _id: doc._id, title:doc.title, year:doc.year, runtime:doc.runtime, released:doc.released, type:doc.type, directors:doc.directors, countries:doc.countries, genres:doc.genres };
+        var detailed = { _id:doc._id, poster:doc.poster, plot:doc.plot, fullplot:doc.fullplot, lastupdated:doc.lastupdated, imdb:doc.imdb, tomatoes:doc.tomatoes };
+        basicDoc.insertOne(basic);
+        detailedDoc.insertOne(detailed);
+    });
+    res.send({info:`doc updated`}).status(200);
+});
+
+/****************************************************************************************************/
+
+app.use('lookup24', async (req, res) => {
+    const basicDoc = mongoClient2.db('movies23').collection("movies_basic");
+    const lookup2 = { }
+    await basicDoc.aggregate()
+})
+
+/****************************************************************************************************/
+
+// NOT WORKING
 app.use('/lowestTimestamps', async (req, res) => {
     const zipsDataBase = mongoClient2.db('zips23');
     let moviesCollection = zipsDataBase.collection("movies");
     const query12 = { };
     let results = await moviesCollection.aggregate(pipeline23).limit(3).toArray();
+    res.send(results).status(200);
+});
+/****************************************************************************************************/
+
+app.use('/addStudent12', async (req, res) => {
+    const zipsDataBase = mongoClient2.db('zips23');
+    let studentsCollection = zipsDataBase.collection("students23");
+    let result12 = { info: 'phattu' };
+    const payload = req.body;
+    console.log(payload);
+    try { result12 = await studentsCollection.insertOne(payload); } catch(err) { console.log(err) };
+    res.send(result12).status(200);
 });
 /****************************************************************************************************/
