@@ -146,8 +146,12 @@ app.use('/group23', async (req, res) => {                           // group all
     const zipsDataBase = mongoClient2.db('zips23');
     let moviesCollection = zipsDataBase.collection("movies");
     const pipeline23 = [
-        { $match: { rated: "UNRATED" } },
-        { $group: { _id: "$year", count: { $sum: 1 } } },
+        { $match: { $and: [ {rated: { $nin: ["UNRATED", "TV-PG"] }  }, { year : {$gte: 1923}} ] }},
+        { $group: { 
+            _id: "$year", 
+            count: { $sum: 1 }, 
+            field23: {$push: {$concat:["$title", " __ ", "$awards.text"]}} 
+        }},
         { $sort: { "_id": 1 } },
         { $limit: 10 }
     ];    
@@ -281,10 +285,10 @@ app.use('/lookup23', async (req, res) => {
         from: "supplies24",
         localField: "item",
         foreignField: "item",
-        as: "inventory_docs22"
+        as: "docs22"
     };    
-    const project1 = {_id: 0, item: 1, price: 1, material22: '$inventory_docs22.material'};
-    const res11 = await suppliesCollection.aggregate([ {$lookup: lookup1}, {$unwind: '$inventory_docs22'}, {$project: project1} ]).toArray();
+    const project1 = {_id: 0, item: 1, price: 1, material22: '$docs22.material', madeBy: '$docs22.manufacturer'};
+    const res11 = await suppliesCollection.aggregate([ {$lookup: lookup1}, {$unwind: '$docs22'}, {$project: project1} ]).toArray();
     res.send(res11).status(200);
 });
 /****************************************************************************************************/
@@ -312,14 +316,6 @@ app.use('/splitCollection', async (req, res) => {
     });
     res.send({info:`doc updated`}).status(200);
 });
-
-/****************************************************************************************************/
-
-app.use('lookup24', async (req, res) => {
-    const basicDoc = mongoClient2.db('movies23').collection("movies_basic");
-    const lookup2 = { }
-    await basicDoc.aggregate()
-})
 
 /****************************************************************************************************/
 
