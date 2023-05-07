@@ -5,6 +5,7 @@ const mongoDb = require('mongodb');
 const PORT = 3021;
 const app = express23();
 app.use(bodyParser.json());
+const dbString = 'zips23';
 
 // // APPROACH I ==========> start mongoServer instantly 
 const mongoClient2 = require('./config/mongodb-config2');
@@ -19,8 +20,7 @@ app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) });
 // })();
 /****************************************************************************************************/
 app.use('/get4Movies', async (req, res) => {
-    const db23 = 'zips23';
-    const zipsDataBase = mongoClient2.db(db23);
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     let results = await moviesCollection.find({}).limit(4).toArray();
     res.send(results).status(200);
@@ -29,8 +29,7 @@ app.use('/get4Movies', async (req, res) => {
 /****************************************************************************************************/
 
 app.use('/moviesThatStartWithM', async (req, res) => {
-    const db23 = 'zips23';
-    const zipsDataBase = mongoClient2.db(db23);
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesColl = zipsDataBase.collection("movies");
     const filter1 = { title:/^S|^R/ };      // must start with either S (or) R
     const filter2 = { title:/^Za/ };        // must start with "Za"
@@ -44,7 +43,7 @@ app.use('/moviesThatStartWithM', async (req, res) => {
 
 /****************************************************************************************************/
 app.use('/allMoviesBefore1913', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     // APPROACH I
     // let results1 = await moviesCollection.find(
@@ -77,7 +76,7 @@ app.use('/allMoviesBefore1913', async (req, res) => {
 /****************************************************************************************************/
 
 app.use('/groupByYear', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     let results = await moviesCollection.aggregate([
         { $match: {} },
@@ -87,14 +86,14 @@ app.use('/groupByYear', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/distinctRatings', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     let results = await moviesCollection.distinct("rated");
     res.send(results).status(200);
 });
 /****************************************************************************************************/
 app.use('/showOnlySomeFields', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const projection23 = { title: 1, rated: 1, released: 1, _id:0 };
     let results = await moviesCollection.find().project(projection23).limit(12).toArray();
@@ -108,7 +107,7 @@ app.use('/showOnlySomeFields', async (req, res) => {
 // add index =====> db.movies.createIndex({title: "text" });
 
 app.use('/textSearch', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query22 = { $text: { $search: "trek" } };                         // query single word
     const query23 = { $text: { $search: "\"star trek\"" } };                // query phrase
@@ -118,7 +117,7 @@ app.use('/textSearch', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/delete', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const docToDelete = { title: { $eq: "Blacksmith Scene" } };
     let deleteResult = await moviesCollection.deleteOne(docToDelete);
@@ -126,7 +125,7 @@ app.use('/delete', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/add23', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const docToAdd = req.body;    
     let addResult = await moviesCollection.insertOne(docToAdd);
@@ -134,7 +133,7 @@ app.use('/add23', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/updateArray', async (req, res) => {                   // update array within a row (ie. Document)
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query12 = { title: "Meshes of the Afternoon" };
     const updateDocument = { $set: { "items.size": "extra large" } };
@@ -143,7 +142,7 @@ app.use('/updateArray', async (req, res) => {                   // update array 
 });
 /****************************************************************************************************/
 app.use('/group23', async (req, res) => {                           // group all unrated movies; year-wise
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const pipeline23 = [
         { $match: { $and: [ {rated: { $nin: ["UNRATED", "TV-PG"] }  }, { year : {$gte: 1923}} ] }},
@@ -160,7 +159,7 @@ app.use('/group23', async (req, res) => {                           // group all
 });
 /****************************************************************************************************/
 app.use('/updateRatings', async (req, res) => {                           // group all unrated movies; year-wise
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const newRatings = {        
           $map: {
@@ -178,7 +177,7 @@ app.use('/updateRatings', async (req, res) => {                           // gro
 });
 /****************************************************************************************************/
 app.use('/addFields', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const pipeline24 = [ 
         { $match: { year:1914 } },
@@ -190,7 +189,7 @@ app.use('/addFields', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/queryRatings', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query1 = { "imdb.rating" : 7.1 };
     const query2 = { "imdb.rating" : { $gt: 8 } };
@@ -200,7 +199,7 @@ app.use('/queryRatings', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/queryArray', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query1 = { languages: ["English", "French"] };
     const query2 = { genres: ["Drama", "Short"] };                      // matches EXACTLY
@@ -212,7 +211,7 @@ app.use('/queryArray', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/addArrayAttribute', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies"); 
     const query1 = { title: "Gertie the Dinosaur" };
     const options1 = { '$set' : {'timeStamps' : [11,12,14,15] } };
@@ -223,7 +222,7 @@ app.use('/addArrayAttribute', async (req, res) => {
 /****************************************************************************************************/
 
 app.use('/addRandomArray', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query1 = { year: { $lt: 1900} }
     const customJsFunction = { $function: {
@@ -241,7 +240,7 @@ app.use('/addRandomArray', async (req, res) => {
 /****************************************************************************************************/
 
 app.use('/optimize23', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const addFields23 = { maxTime: { $max: "$timeStamps12" }, minTime: { $min: "$timeStamps12" } }
     const project23 = { _id: 0, title: 1, timeStamps12: 1, maxTime: 1, minTime: 1, 
@@ -258,7 +257,7 @@ app.use('/optimize23', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/discountedPrice', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let suppliesCollection = zipsDataBase.collection("supplies23");
     // calculate the discounted price based on the qty
     // return documents whose calculated discount price is less than 5
@@ -278,7 +277,7 @@ app.use('/discountedPrice', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/lookup23', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let suppliesCollection = zipsDataBase.collection("supplies23");
     // collect the information from the document 'order' & 'SKU' field from the 'inventory' document.
     const lookup1 = {
@@ -293,7 +292,7 @@ app.use('/lookup23', async (req, res) => {
 });
 /****************************************************************************************************/
 app.use('/updateId', async (req, res) => {
-    const coll1 = mongoClient2.db('zips23').collection("movies");
+    const coll1 = mongoClient2.db(dbString).collection("movies");
     const coll2 = mongoClient2.db('movies23').collection("movies_copy4");
     var count = 50001;
     await coll1.find().forEach(doc => {
@@ -321,7 +320,7 @@ app.use('/splitCollection', async (req, res) => {
 
 // NOT WORKING
 app.use('/lowestTimestamps', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query12 = { };
     let results = await moviesCollection.aggregate(pipeline23).limit(3).toArray();
@@ -330,7 +329,7 @@ app.use('/lowestTimestamps', async (req, res) => {
 /****************************************************************************************************/
 
 app.use('/addStudent12', async (req, res) => {
-    const zipsDataBase = mongoClient2.db('zips23');
+    const zipsDataBase = mongoClient2.db(dbString);
     let studentsCollection = zipsDataBase.collection("students23");
     let result12 = { info: 'phattu' };
     const payload = req.body;

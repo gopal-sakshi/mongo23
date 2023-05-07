@@ -4,6 +4,7 @@
   "description": "learning mongo",
   "main": "index.js",
   "scripts": {
+    "start_mongo_win":"C:\\Program Files\\MongoDB\\Server\\6.0\\bin\\mongod.exe  --dbpath=\"C:\\Program Files\\MongoDB\\mongo_databases23\"",
     "start": "node index.js",
     "start_nodemon": "nodemon index.js"
   },
