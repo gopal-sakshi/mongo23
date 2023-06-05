@@ -136,8 +136,9 @@ app.use('/updateArray', async (req, res) => {                   // update array 
     const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query12 = { title: "Meshes of the Afternoon" };
-    const updateDocument = { $set: { "items.size": "extra large" } };
-    let addResult = await moviesCollection.updateOne(query12, updateDocument);
+    const updateDocument1 = { $set: { "items.size": "extra large" } };
+    const updateDocument2 = { $set: { "items.size": "extra large", "timeStamps12": [10, 23, 44, 65, 88] } };
+    let addResult = await moviesCollection.updateOne(query12, updateDocument2);
     res.send(addResult).status(200);    
 });
 /****************************************************************************************************/
@@ -148,7 +149,7 @@ app.use('/group23', async (req, res) => {                           // group all
         { $match: { $and: [ {rated: { $nin: ["UNRATED", "TV-PG"] }  }, { year : {$gte: 1923}} ] }},
         { $group: { 
             _id: "$year", 
-            count: { $sum: 1 }, 
+            count: { $sum: -1 }, 
             field23: {$push: {$concat:["$title", " __ ", "$awards.text"]}} 
         }},
         { $sort: { "_id": 1 } },
@@ -180,9 +181,9 @@ app.use('/addFields', async (req, res) => {
     const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const pipeline24 = [ 
-        { $match: { year:1914 } },
+        { $match: { $and: [ { year: {$gte: 2000} }, { year: {$lte: 2025} } ] } },
         { $project: { title: 1, totalRatings23: 1, imdb : { rating: 1 } } }, 
-        { $addFields: { totalRatings23: { $add: [ "$imdb.rating", "$tomatoes.fresh" ] }} }
+        { $addFields: { totalRatings23: { $concat: [ { $toString: "$imdb.rating"}, { $toString: "$tomatoes.fresh"} ] }} }
     ]
     let results = await moviesCollection.aggregate(pipeline24).toArray();
     res.send(results).status(200);
