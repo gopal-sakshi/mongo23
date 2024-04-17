@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const dbString = 'zips23';
 
 // // APPROACH I ==========> start mongoServer instantly 
-const mongoClient2 = require('./config/mongodb-config2');
+const mongoClient2 = require('./config/mongodb-config1');
 app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) });
 
 // APPROACH II ===========> wait for mongoConnection & start Server (NOT WORKING)
