@@ -18,6 +18,11 @@ app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) });
 //     console.log(mongoClient2);
 //     app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) })
 // })();
+
+/****************************************************************************************************/
+const queriesRouter = require('./index_queries23');
+app.use('/queries23', queriesRouter);
+
 /****************************************************************************************************/
 app.use('/get4Movies', async (req, res) => {
     const zipsDataBase = mongoClient2.db(dbString);
