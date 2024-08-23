@@ -1,0 +1,45 @@
+shardingVersion
+{ _id: 1, clusterId: ObjectId('66c84cf532c745429f0794ec') }
+---
+shards
+[
+  {
+    _id: 'shard1rs',
+    host: 'shard1rs/10.0.54.240:20001,10.0.54.240:50002,10.0.54.240:50003',
+    state: 1,
+    topologyTime: Timestamp({ t: 1724403468, i: 2 })
+  }
+]
+---
+active mongoses
+[ { '7.0.6': 1 } ]
+---
+autosplit
+{ 'Currently enabled': 'yes' }
+---
+balancer
+{
+  'Currently enabled': 'yes',
+  'Currently running': 'no',
+  'Failed balancer rounds in last 5 attempts': 0,
+  'Migration Results for the last 24 hours': 'No recent migrations'
+}
+---
+databases
+[
+  {
+    database: { _id: 'config', primary: 'config', partitioned: true },
+    collections: {
+      'config.system.sessions': {
+        shardKey: { _id: 1 },
+        unique: false,
+        balancing: true,
+        chunkMetadata: [ { shard: 'shard1rs', nChunks: 1 } ],
+        chunks: [
+          { min: { _id: MinKey() }, max: { _id: MaxKey() }, 'on shard': 'shard1rs', 'last modified': Timestamp({ t: 1, i: 0 }) }
+        ],
+        tags: []
+      }
+    }
+  }
+]

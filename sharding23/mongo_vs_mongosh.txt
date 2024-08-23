@@ -1,0 +1,18 @@
+mongo vs mongosh
+
+old mongoDb shell is called         mongo
+new mongoDb shell is called         mongosh
+
+- mongo (or) mongosh === a mongo client
+- which is used to ask query to mongoDb server
+
+mongo was fine
+but overtime shell can be used to do lots & lots of stuff
+simple queries to complex admin operations
+so, new mongo client ===> mongosh
+mongosh client is standalone product separate from MongoDb server
+
+-------------------------------------------------------------------------------------
+
+which mongosh
+sudo dpkg -i mongo23.deb
