@@ -64,8 +64,17 @@ range based sharding
     sh.shardCollection("db23.collection23", { name: 1 } )
     sh.shardCollection("movies23.telugu", { hero: 1 } )
     sh.shardCollection("movies23.english", { rated:1 })
+    sh.shardCollection("movies23.airbnb", { property_type:1 })
+    sh.shardCollection("movies23.divvy_2017", { usertype:1, gender:1 });
 
 hashed sharding
     sh.shardCollection("db23.collection23", { name: "hashed" } )
 
 <!------------------------------------------------------------------------------------------->
+
+`summary of commands`
+
+
+mongod --configsvr --replSet cfgrs --port 27017 --dbpath /data/db
+mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+mongos --configdb cfgrs/192.168.29.120:10001 --bind_ip 0.0.0.0 --port 27017
