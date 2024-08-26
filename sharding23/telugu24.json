@@ -1,0 +1,58 @@
+[
+    {
+        "title": "manam",
+        "director": "vikram kumar",
+        "hero": "nagarjuna",
+        "heroine": "shreya",
+        "year": 2014
+    },
+    {
+        "title": "1 nenokkadine",
+        "director": "sukumar",
+        "hero": "mahesh babu",
+        "heroine": "kriti sanon",
+        "year": 2014
+    },
+    {
+        "title": "eega",
+        "director": "rajamouli",
+        "hero": "nani",
+        "heroine": "samantha",
+        "year": 2012
+    },
+    {
+        "title": "magadheera",
+        "director": "rajamouli",
+        "hero": "ram charan",
+        "heroine": "kajal",
+        "year": 2009
+    },
+    {
+        "title": "maryada ramanna",
+        "director": "rajamouli",
+        "hero": "sunil",
+        "heroine": "saloni",
+        "year": 2010
+    },
+    {
+        "title": "arya 2",
+        "director": "sukumar",
+        "hero": "allu arjun",
+        "heroine": "kajal",
+        "year": 2009
+    },
+    {
+        "title": "ishq",
+        "director": "vikram kumar",
+        "hero": "nithin",
+        "heroine": "nitya menen",
+        "year": 2012
+    },
+    {
+        "title": "ala moudalaindi",
+        "director": "nandini reddy",
+        "hero": "nani",
+        "heroine": "nitya menen",
+        "year": 2011
+    }
+]

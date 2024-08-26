@@ -1,8 +1,8 @@
 services:
 
   mongos:
-    container_name: mongos
+    container_name: configs_mongos
     image: mongo
-    command: mongos --configdb cfgrs/10.0.54.240:10001,10.0.54.240:10002,10.0.54.240:10003 --bind_ip 0.0.0.0 --port 27017
+    command: mongos --configdb cfgrs/192.168.29.120:10001,192.168.29.120:10002,192.168.29.120:10003 --bind_ip 0.0.0.0 --port 27017
     ports:
       - 30000:27017
