@@ -76,5 +76,22 @@ hashed sharding
 
 
 mongod --configsvr --replSet cfgrs --port 27017 --dbpath /data/db
+rs.initiate({ 
+    _id: "cfgrs", 
+    configsvr: true, 
+    members: ["3_config_servers"] 
+})
+
 mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+rs.initiate({
+    _id: "shard1rs", 
+    members: ["3_members_of_shard"]
+})
+
 mongos --configdb cfgrs/192.168.29.120:10001 --bind_ip 0.0.0.0 --port 27017
+sh.addShard("shard1rs/192.168.29.120:20001,192.168.29.120:50002,192.168.29.120:50003") 
+
+config server = 10001, 10002, 10003
+1st shard = 20001, 50002, 50003
+2nd shard = 20011, 20012, 20013
+mongos = 30000

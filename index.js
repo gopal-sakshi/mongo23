@@ -85,7 +85,8 @@ app.use('/groupByYear', async (req, res) => {
     let moviesCollection = zipsDataBase.collection("movies");
     let results = await moviesCollection.aggregate([
         { $match: {} },
-        { $group: { _id: "$year", movieCount: { $sum: 1 } } }
+        { $group: { _id: "$year", movieCount: { $sum: 1 } } },
+        { $sort: { "movieCount": -1 } },
     ]).toArray();
     res.send(results).status(200);
 });
@@ -110,9 +111,12 @@ app.use('/showOnlySomeFields', async (req, res) => {
 
 // add index =====> db.movies.createIndex({fullplot: "text" });
 // add index =====> db.movies.createIndex({title: "text" });
+// add index =====> db.movies.createIndex({fullplot: "text", title: "text" });
 
 app.use('/textSearch', async (req, res) => {
     const zipsDataBase = mongoClient2.db(dbString);
+    await zipsDataBase.collection("movies").createIndex({fullplot: "text", title: "text" });
+    console.log("indices on movies collection ===> ", await zipsDataBase.collection("movies").listIndexes().toArray());
     let moviesCollection = zipsDataBase.collection("movies");
     const query22 = { $text: { $search: "trek" } };                         // query single word
     const query23 = { $text: { $search: "\"star trek\"" } };                // query phrase
@@ -142,7 +146,7 @@ app.use('/updateArray', async (req, res) => {                   // update array 
     let moviesCollection = zipsDataBase.collection("movies");
     const query12 = { title: "Meshes of the Afternoon" };
     const updateDocument1 = { $set: { "items.size": "extra large" } };
-    const updateDocument2 = { $set: { "items.size": "extra large", "timeStamps12": [10, 23, 44, 65, 88] } };
+    const updateDocument2 = { $set: { "items.size": "extra large", "timeStamps12": req.body.timestamps23 } };
     let addResult = await moviesCollection.updateOne(query12, updateDocument2);
     res.send(addResult).status(200);    
 });
@@ -176,7 +180,7 @@ app.use('/updateRatings', async (req, res) => {                           // gro
     }
     const pipeline23 = [
         { $match: { year:1912 } },
-        { $project: {  newRatings } },
+        { $project: { title: 1, newRatings } },
     ];    // this only returns the results with _1912 appended... wont modify original array
     let results = await moviesCollection.aggregate(pipeline23).toArray();
     res.send(results).status(200);
@@ -188,7 +192,8 @@ app.use('/addFields', async (req, res) => {
     const pipeline24 = [ 
         { $match: { $and: [ { year: {$gte: 2000} }, { year: {$lte: 2025} } ] } },
         { $project: { title: 1, totalRatings23: 1, imdb : { rating: 1 } } }, 
-        { $addFields: { totalRatings23: { $concat: [ { $toString: "$imdb.rating"}, { $toString: "$tomatoes.fresh"} ] }} }
+        { $addFields: { totalRatings23: { $concat: [ { $toString: "$imdb.rating"}, { $toString: "$tomatoes.fresh"} ] }} },
+        // { $addFields: { totalRatings23: Date.now()} }
     ]
     let results = await moviesCollection.aggregate(pipeline24).toArray();
     res.send(results).status(200);
@@ -226,15 +231,36 @@ app.use('/addArrayAttribute', async (req, res) => {
     // results = { "acknowledged": true, "modifiedCount": 2, "upsertedId": null, "upsertedCount": 0, "matchedCount": 2 }
 });
 /****************************************************************************************************/
+app.use('/deleteField', async (req, res) => {
+    const zipsDataBase = mongoClient2.db(dbString);
+    let moviesCollection = zipsDataBase.collection("movies");
+    let unset23 = { $unset: { timeStamps12: "" } }
+    let results = await moviesCollection.updateMany({},unset23);
+    res.send(results).status(200);          
+});
 
+/****************************************************************************************************/
+function customJs23 () { 
+    return [ 
+        Math.floor(Math.random() * 100), 
+        Math.floor(Math.random() * 100), 
+        Math.floor(Math.random() * 100), 
+        Math.floor(Math.random() * 100), 
+        Math.floor(Math.random() * 100) 
+    ];
+}
 app.use('/addRandomArray', async (req, res) => {
     const zipsDataBase = mongoClient2.db(dbString);
     let moviesCollection = zipsDataBase.collection("movies");
     const query1 = { year: { $lt: 1900} }
     const customJsFunction = { $function: {
-        body: `function() { 
-            return [ Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100) ];
-        }`,
+        body: customJs23.toString(),
+
+        // We can also provide entire function here itself as "body property"
+        // body: `function() { 
+        //     return [ Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100) ];
+        // }`,
+
         args: [],
         lang: "js"
     }};
@@ -251,8 +277,11 @@ app.use('/optimize23', async (req, res) => {
     const addFields23 = { maxTime: { $max: "$timeStamps12" }, minTime: { $min: "$timeStamps12" } }
     const project23 = { _id: 0, title: 1, timeStamps12: 1, maxTime: 1, minTime: 1, 
         awards23: "$" + "awards.wins",  avgTime: { $avg: ["$maxTime",  "$minTime"] }  };
-    const match23 = {  //  "awards.wins": 1,                            // enduko idi work avvatam ledu
-        minTime: { $lt: 10 }, avgTime: { $gt: 40 } };
+    const match23 = {  
+        //  "awards.wins": 1,                            // enduko idi work avvatam ledu
+        minTime: { $lt: 10 }, 
+        avgTime: { $gt: 40 } 
+    };
     const pipeline23 = [
         { $addFields: addFields23 },
         { $project: project23 },
@@ -265,7 +294,7 @@ app.use('/optimize23', async (req, res) => {
 app.use('/discountedPrice', async (req, res) => {
     const zipsDataBase = mongoClient2.db(dbString);
     let suppliesCollection = zipsDataBase.collection("supplies23");
-    // calculate the discounted price based on the qty
+    // calculate the discounted price based on the qty 
     // return documents whose calculated discount price is less than 5
     // instead of NumberDecimal(); use mongoDb.Decimal128.fromString()
     // binder 12, notebook 8, pencil 6, eraser 3, legal_pad 10
@@ -273,12 +302,29 @@ app.use('/discountedPrice', async (req, res) => {
     let discountedPrice = {
         $cond: {
            if: { $gte: ["$qty", 100] },
-           then: { $multiply: ["$price", 0.50] },
-           else: { $multiply: ["$price", 0.75] }
+           then: { $multiply: ["$price", 0.50] },           // provide 50% discount if qty > 100 units
+           else: { $multiply: ["$price", 0.75] }            // else provide 25% discount
         }
     };
-    const query1 = { $expr: { $lt: [ discountedPrice, 7 ] }};
-    let results = await suppliesCollection.find(query1).toArray();
+    const query1 = { $expr: { $lt: [ discountedPrice, 700 ] }};
+    
+    // // APPROACH I
+    // let results = await suppliesCollection.find(query1).toArray();
+
+    // // APPROACH II --------> project before addFields ---> discount23 is null
+    // let results = await suppliesCollection.aggregate([ 
+    //     { $match: query1 },
+    //     { $project: {item: 1, qty: 1, _id: 0, discount23: 1 } },
+    //     { $addFields: { discount23: discountedPrice } }
+    // ]).toArray();
+
+    // // APPROACH III --------> project after addFields ---> discount23 is correct value
+    let results = await suppliesCollection.aggregate([ 
+        { $match: query1 },        
+        { $addFields: { discount23: discountedPrice } },
+        { $project: {item: 1, qty: 1, _id: 0, discount23: 1 } },
+    ]).toArray();
+
     res.send(results).status(200);
 });
 /****************************************************************************************************/
