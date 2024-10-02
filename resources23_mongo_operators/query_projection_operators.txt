@@ -1,0 +1,38 @@
+comparision
+
+eq, gt, gte, lt, lte, ne
+in, nin
+
+logical
+
+$and 
+$not
+$nor
+$or
+
+element
+$exists
+$type
+
+evaluation
+$expr
+$jsonSchema
+$mod
+$regex
+$text
+$where
+
+array
+$all
+$elemMatch
+$size
+
+projection operators
+$
+$elemMatch
+$meta
+$slice
+
+misc
+$comment
+$rand
