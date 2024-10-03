@@ -1,0 +1,60 @@
+[
+    {
+        "playerName": "Benzema",
+        "postion": "Attack",
+        "otherStuff": { "country": "France"  },
+        "description": "He didnt play for france in both worldcups 2018, 2022. He observes fast during Ramadan month. He was under investigation for allegedly blackmailing Valbuena in connection with a sextape ",
+        "isActive": true,
+        "otherClubs": ["Lyon"],
+        "dateJoined": "2022-07-09"
+    },
+    {
+        "playerName": "Modric",
+        "postion": "Midfield",
+        "otherStuff": { "country": "Croatia", "earlyYears": "spent his childhood days in war torn Yugoslavia & newly formed Croatia"  },
+        "description": "He played for Croatia in both worldcups 2018, 2022. He captained his team to World cup runner position in 2018. Arguably the greatest player of Croatia",
+        "isActive": true,
+        "otherClubs": ["Spurs", "Dinamo Zagreb"],
+        "dateJoined": "2012-08-27"
+    },
+    {
+        "playerName": "Kroos",
+        "postion": "Midfield",
+        "otherStuff": { "country": "Germany", "earlyYears": "he was from east germany"  },
+        "description": "He won the worldcup with Germany in 2014",
+        "isActive": true,
+        "otherClubs": ["Bayern Munich", "Dinamo Zagreb"]        
+    },
+    {
+        "playerName": "Valverde",
+        "postion": "Midfield",
+        "otherStuff": { "country": "Uruguay", "style": "very enthusiastic player"  },
+        "description": "Valverde played for Uruguay in 2022 worldcup",
+        "isActive": true
+    },
+    {
+        "playerName": "Vinicius",
+        "postion": "Attack",
+        "otherStuff": { "country": "Brazil", "style": "plays as Left Winger"  },
+        "description": "very fast player... uses his pace and races past opponents",
+        "isActive": true
+    },
+    {
+        "playerName": "Ronaldo",
+        "postion": "Midfield",
+        "otherStuff": { "country": "Portugal", "earlyYears": "lost his father due to alcoholism", "skills": ["fast", "heading", "shooting"]  },
+        "description": "Arguably the greatest player of his generation. He had long-standing rivalry with Messi",
+        "isActive": false,
+        "otherClubs": ["Sporting Lisbon", "Manchester United", "Juventus"],
+        "dateJoined": "2009-07-11"
+    },
+    {
+        "playerName": "Modric",
+        "postion": "Midfield__this_didnt_inserted__________________________COZ_DUPLICATE_____MODRIC",
+        "otherStuff": { "country": "Croatia", "earlyYears": "spent his childhood days in war torn Yugoslavia & newly formed Croatia"  },
+        "description": "He played for Croatia in both worldcups 2018, 2022. He captained his team to World cup runner position in 2018. Arguably the greatest player of Croatia",
+        "isActive": true,
+        "otherClubs": ["Spurs", "Dinamo Zagreb"],
+        "dateJoined": "2012-08-27"
+    }
+]

@@ -1,0 +1,8 @@
+findOneAndDelete()          returns the deleted document after having deleted it 
+                            in case you need its contents after the delete operation
+
+deleteOne()                 is used to delete a single document
+deleteMany                  to delete multiple documents
+
+remove()                    deprecated function and has been replaced by deleteOne() & deleteMany()
+---------------------------------------------------------------------------------------

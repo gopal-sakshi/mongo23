@@ -1,0 +1,58 @@
+[
+    {
+        "name": "annayya",
+        "director": "mutyala subbayya",
+        "hero": "chiraneevi",
+        "heroine": "soundarya",
+        "year": 2000
+    },
+    {
+        "name": "hitler",
+        "director": "",
+        "hero": "chiranjeevi",
+        "heroine": "ramba",
+        "year": 1996
+    },
+    {
+        "name": "indra",
+        "director": "b gopal",
+        "hero": "chiranjeevi",
+        "heroine": "sonali bindre",
+        "year": 2002
+    },
+    {
+        "name": "pokiri",
+        "director": "puri jagan",
+        "hero": "mahesh babu",
+        "heroine": "ileana",
+        "year": 2006
+    },
+    {
+        "name": "khaidi",
+        "director": "a kondamarami reddy",
+        "hero": "chiranjeevi",
+        "heroine": "madhavi",
+        "year": 1983
+    },
+    {
+        "name": "baahubali",
+        "director": "rajamouli",
+        "hero": "prabhas",
+        "heroine": "anushka",
+        "year": 2015
+    },
+    {
+        "name": "arya",
+        "director": "sukumar",
+        "hero": "allu arjun",
+        "heroine": "anu mehta",
+        "year": 2001
+    },
+    {
+        "name": "vikramarkudu",
+        "director": "rajamouli",
+        "hero": "raviteja",
+        "heroine": "anushka",
+        "year": 2006
+    }
+]

@@ -1,0 +1,120 @@
+[
+    {
+        "_id": {
+            "$oid": "66b2bb6cae8d89ffb0645515"
+        },
+        "name": "Library_22",
+        "positions": [
+            {
+                "number": 2,
+                "nodes": [
+                    {
+                        "number": 2,
+                        "bookId": "6254674d3711f90bd8e76036"
+                    },
+                    {
+                        "number": 1,
+                        "bookId": "621e9b5aa7951d0be4516c18"
+                    }
+                ]
+            },
+            {
+                "number": 1,
+                "nodes": [
+                    {
+                        "number": 1,
+                        "bookId": "6254674d3711f90bd8e76037"
+                    },
+                    {
+                        "number": 3,
+                        "bookId": "6254674d3711f90bd8e76039"
+                    },
+                    {
+                        "number": 2,
+                        "bookId": "6254674d3711f90bd8e76035"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "66b2bbfaae8d89ffb0645517"
+        },
+        "name": "library_23",
+        "positions": [
+            {
+                "number": 2,
+                "nodes": [
+                    {
+                        "number": 4,
+                        "bookId": "553ddd5556gfa"
+                    },
+                    {
+                        "number": 3,
+                        "bookId": "33445522ffgtdgv1"
+                    },
+                    {
+                        "number": 2,
+                        "bookId": "12343231ddrex"
+                    },
+                    {
+                        "number": 1,
+                        "bookId": "555555342323bh"
+                    }
+                ]
+            },
+            {
+                "number": 2,
+                "nodes": [
+                    {
+                        "number": 2,
+                        "bookId": "625411f90bd8e76036"
+                    },
+                    {
+                        "number": 1,
+                        "bookId": "b5aa7951d4516c18"
+                    }
+                ]
+            },
+            {
+                "number": 1,
+                "nodes": [
+                    {
+                        "number": 1,
+                        "bookId": "74d3711f90bd8e76037"
+                    },
+                    {
+                        "number": 3,
+                        "bookId": "11f90bd8e76039"
+                    },
+                    {
+                        "number": 2,
+                        "bookId": "6254674d3711f90bd8e76035"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "66b2c063ae8d89ffb0645518"
+        },
+        "name": "library_25",
+        "positions": [
+            {
+                "number": 1,
+                "nodes": [
+                    {
+                        "number": 2,
+                        "bookId": "0bd8e760625411f936"
+                    },
+                    {
+                        "number": 1,
+                        "bookId": "b5aa7951d4516c18"
+                    }
+                ]
+            }
+        ]
+    }
+]

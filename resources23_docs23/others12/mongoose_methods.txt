@@ -1,0 +1,41 @@
+Models
+
+
+Adventure.countDocuments({ type: 'jungle' }, function (err, count) {
+    console.log('there are %d jungle adventures', count);
+});
+
+estimatedDocumentCount()        // faster because uses collection's metadata rather than scanning entire collection
+
+deleteMany()
+deleteOne()
+
+ensureIndexes()
+createIndex()
+
+events          // Event emitter
+
+MyModel.events.on('error', err => console.log(err.message));
+await MyModel.findOne({ _id: 'Not a valid ObjectId' }).catch(noop);
+
+
+EXISTS
+MyModel.exists({ answer: 42 })              equivalent to 
+MyModel.findOne({ answer: 42 }).select({ _id: 1 }).lean()
+
+
+find
+findById                                equivalent to findOne({ _id: id })
+findByIdAndDelete()                     findOneAndDelete({ _id: id })
+findByIdAndRemove()                     returns removed document
+findByIdAndUpdate()                     
+    returnDocument: 'before'            // returns document 'before' update was applied
+
+
+hydrate
+- creating a new Document from existing raw data, pre-saved in the DB
+
+
+
+
+

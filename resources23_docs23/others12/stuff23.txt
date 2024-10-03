@@ -1,0 +1,4 @@
+Mongoose lets you start using your models immediately
+- without waiting for mongoose to establish a connection to MongoDB.
+- ERROR ===> Operation `emails.insertOne()` buffering timed out after 10000ms
+

@@ -23,6 +23,9 @@ app.listen(PORT, () => { console.log(`mongo23 app @ port ===> ${PORT}`) });
 const queriesRouter = require('./index_queries23');
 app.use('/queries23', queriesRouter);
 
+
+const mongooseRouter = require('./mongoose24/index');
+app.use('/mongoose', mongooseRouter);
 /****************************************************************************************************/
 app.use('/get4Movies', async (req, res) => {
     const zipsDataBase = mongoClient2.db(dbString);
